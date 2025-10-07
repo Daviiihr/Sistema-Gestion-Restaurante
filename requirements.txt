@@ -1,0 +1,31 @@
+# Dependencias para el Sistema de Gestión de Restaurante
+# Fecha de generación: 7 de octubre de 2025
+
+# Interfaz gráfica moderna con CustomTkinter
+customtkinter>=5.2.0
+
+# Componente de messagebox para CustomTkinter
+CTkMessagebox>=2.5
+
+# Manipulación de imágenes
+Pillow>=10.0.0
+
+# Procesamiento de archivos PDF
+fpdf2>=2.7.0
+
+# Visualización de PDFs (PyMuPDF)
+PyMuPDF>=1.23.0
+
+# Análisis de datos y manipulación de CSV/Excel
+pandas>=2.0.0
+
+# Dependencias del sistema (incluidas en Python estándar)
+# tkinter - Incluido en Python
+# threading - Incluido en Python
+# math - Incluido en Python
+# io - Incluido en Python
+# os - Incluido en Python
+# re - Incluido en Python
+# dataclasses - Incluido en Python 3.7+
+# typing - Incluido en Python 3.5+
+# datetime - Incluido en Python
