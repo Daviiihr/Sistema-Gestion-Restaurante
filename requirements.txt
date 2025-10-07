@@ -29,3 +29,12 @@ pandas>=2.0.0
 # dataclasses - Incluido en Python 3.7+
 # typing - Incluido en Python 3.5+
 # datetime - Incluido en Python
+
+# Nota: en este entorno no se pudo crear el directorio `.venv` automáticamente porque
+# falta el módulo 'ensurepip' en la instalación de sistema de Python. Los paquetes
+# listados más abajo fueron instalados en el entorno de usuario mediante pip.
+# Para crear un `.venv` local en Debian/Ubuntu ejecute:
+#   sudo apt install python3.12-venv
+#   python3 -m venv .venv
+#   source .venv/bin/activate
+#   pip install -r requirements.txt
