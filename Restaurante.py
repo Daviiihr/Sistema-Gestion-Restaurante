@@ -36,15 +36,6 @@ class AplicacionConPestanas(ctk.CTk):
 
         self.crear_pestanas()
 
-    def actualizar_treeview(self):
-
-        for item in self.tree.get_children():
-            self.tree.delete(item)
-
-
-        for ingrediente in self.stock.lista_ingredientes:
-            self.tree.insert("", "end", values=(ingrediente.nombre,ingrediente.unidad, ingrediente.cantidad))    
-
     def on_tab_change(self):
         selected_tab = self.tabview.get()
         if selected_tab == "carga de ingredientes":
@@ -380,13 +371,55 @@ class AplicacionConPestanas(ctk.CTk):
             return False
 
     def ingresar_ingrediente(self):
-        pass
+        nombre = self.entry_nombre.get().strip()
+        unidad = self.combo_unidad.get().strip() or None
+        cantidad = self.entry_cantidad.get().strip()
+
+        if not nombre or not cantidad:
+            CTkMessagebox(title="Error", message="Completa todos los campos.", icon="warning")
+            return
+
+        if not self.validar_nombre(nombre) or not self.validar_cantidad(cantidad):
+            return
+
+        ingrediente = Ingrediente(nombre=nombre, unidad=unidad, cantidad=float(cantidad))
+        self.stock.agregar_ingrediente(ingrediente)
+        self.actualizar_treeview()
+
+        self.entry_nombre.delete(0, "end")
+        self.entry_cantidad.delete(0, "end")
 
     def eliminar_ingrediente(self):
-        pass
+        seleccion = self.tree.selection()
+        if not seleccion:
+            CTkMessagebox(title="Aviso", message="Selecciona un ingrediente para eliminar.", icon="warning")
+            return
+
+        item_id = seleccion[0]
+        valores = self.tree.item(item_id, "values")
+        nombre = valores[0]
+        unidad = valores[1] if len(valores) > 1 else None
+
+        eliminado = self.stock.eliminar_ingrediente(nombre, None if unidad in (None, "-", "") else unidad)
+        if not eliminado:
+            CTkMessagebox(title="Aviso", message="No se pudo eliminar el ingrediente seleccionado.", icon="warning")
+            return
+
+        self.actualizar_treeview()
 
     def actualizar_treeview(self):
-        pass
+        if not hasattr(self, "tree"):
+            return
+
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+        for ingrediente in self.stock.lista_ingredientes:
+            self.tree.insert(
+                "",
+                "end",
+                values=(ingrediente.nombre, ingrediente.unidad or "-", ingrediente.cantidad),
+            )
 
 
 if __name__ == "__main__":
