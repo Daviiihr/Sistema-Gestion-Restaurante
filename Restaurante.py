@@ -277,7 +277,42 @@ class AplicacionConPestanas(ctk.CTk):
 
     
     def generar_menus(self):
-        pass
+        # Limpia las tarjtas anteriotes
+        for widget in tarjetas_frame.winfo_children():
+            widget.destroy()
+        self.menus_creados.clear()
+        
+        menu_generado = 0
+        # Aquí se itera sobre los menús predefinidos
+        for item in self.menus:
+            disponible = True # Asume que el item está disponible
+
+            #Por cada ingrediente que necesita el item
+            for ingNecesario in item.ingredientes:
+                ingEncontradoEnStock = False
+
+                # se busca si está en el stock 
+                for ingStock in self.stock.lista_ingredientes:
+                    if ingNecesario.nombre.lower() == ingStock.nombre.lower():
+                        ingEncontradoEnStock = True
+                        #Se verifica la cantidad que necesita
+                        if int(ingStock.cantidad) < int(ingNecesario.cantidad):
+                            disponible = False # Falso por que no hay suficiente
+                        break
+                
+                # Si el ingrediente no se encontró en el stock, el item no está disponible
+                if not ingEncontradoEnStock or not disponible:
+                    disponible = False
+                    break
+            
+            if disponible:
+                if item.nombre not in self.menus_creados:
+                    self.crear_tarjeta(item)
+                    self.menus_creados.add(item.nombre)
+                    menu_generado += 1
+        
+        if menu_generado == 0:
+            CTkMessagebox(title="Stock Insuficiente", message="No hay suficientes ingredientes en stock para generar ningún item", icon="warning")
 
     def eliminar_menu(self):
         pass

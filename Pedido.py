@@ -4,13 +4,27 @@ class Pedido:
         self.menus = []  
 
     def agregar_menu(self, menu: CrearMenu):
-        pass
+        # Busca si el menú ya está en el pedido para actualizar la cantidad
+        for item in self.menus:
+            if item.nombre == menu.nombre:
+                item.cantidad += 1
+                return
+        # Esta en 1 porque es la primera vez que se agrega
+        menu.cantidad = 1
+        self.menus.append(menu)
 
     def eliminar_menu(self, nombre_menu: str):
-        pass
+        self.menus = [item for item in self.menus if item.nombre != nombre_menu]
 
     def mostrar_pedido(self):
-        pass
+        if not self.menus:
+
+            return "El pedido está vacío."
+        detallePedido = "Detalle del Pedido:\n"
+        for item in self.menus:
+
+            detallePedido += f"{item.nombre} x{item.cantidad}\n"
+        return detallePedido        
 
     def calcular_total(self) -> float:
-        pass
+        return sum(menu.precio * menu.cantidad for menu in self.menus)
