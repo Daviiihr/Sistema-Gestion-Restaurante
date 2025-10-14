@@ -9,20 +9,16 @@ def get_default_menus() -> List[IMenu]:
         CrearMenu(
             "Papas Fritas",
             [ Ingrediente("Papas", "unid", 5)],
-            precio=500
-        ),
-        CrearMenu(
-            "Pepsi",
-            [ Ingrediente("Pepsi", "unid", 1)],
-            precio=1100
+            precio=500,
+            icono_path="IMG/icono_papas_fritas_64x64.png",
         ),
         CrearMenu(
             "Completo",
             [
-                Ingrediente("Vienesa","unid", 1),
-                Ingrediente("Pan de completo","unid", 1),
-                Ingrediente("Palta","kg",0.5),
-                Ingrediente("Tomate","kg",0.2),
+            Ingrediente("Vienesa","unid", 1),
+            Ingrediente("Pan de completo","unid", 1),
+            Ingrediente("Palta","kg",0.5),
+            Ingrediente("Tomate","kg",0.2),
             ],
             precio=1800,
             icono_path="IMG/icono_hotdog_sin_texto_64x64.png",
@@ -34,43 +30,36 @@ def get_default_menus() -> List[IMenu]:
             Ingrediente("lámina de queso", "unid", 1),
             Ingrediente("churrasco de carne", "unid", 1),
             ],
-            precio=3500
+            precio=3500,
+            icon_path="IMG/icono_hamburguesa_negra_64x64.png",
         ),
         CrearMenu(
-            "Panqueques",
-            [ 
-            Ingrediente("panqueques", "unid", 2),
-            Ingrediente("manjar", "unid", 1),
-            Ingrediente("azúcar flor", "unid", 1),
-            ],
-            precio=2000
-        ),
-        CrearMenu(
-            "Pollo frito",
+            "Chorrillana",
             [
-            Ingrediente("presa de pollo", "unid", 1),
-            Ingrediente("porción de harina", "unid", 1),
-            Ingrediente("porción de aceite", "unid", 1),
+            Ingrediente("papas fritas", "unid", 1),
+            Ingrediente("carne de vacuno", "unid", 1),
+            Ingrediente("huevo frito", "unid", 1),
+            Ingrediente("cebolla", "unid", 1),
             ],
-            precio=2800
+            precio=4500,
+            icon_path="IMG/icono_chorrillana_64x64.png",
         ),
         CrearMenu(
-            "Ensalada mixta",
-            [
-            Ingrediente("lechuga", "unid", 1),
-            Ingrediente("tomate", "unid", 1),
-            Ingrediente("zanahoria", "unid", 1),
-            ],
-            precio=1500
+            "Cola",
+            [ Ingrediente("Cola", "unid", 1)],
+            precio=1000,
+            icon_path="IMG/icono_cola_64x64.png",
         ),
         CrearMenu(
-            "Sopa de verduras",
-            [
-            Ingrediente("calabacín", "unid", 1),
-            Ingrediente("zanahoria", "unid", 1),
-            Ingrediente("apio", "unid", 1),
-            Ingrediente("caldo de verduras", "litro", 1),
-            ],
-            precio=1200
+            "Cola Lata",
+            [ Ingrediente("Cola Lata", "unid", 1)],
+            precio=1200,
+            icon_path="IMG/icono_cola_lata_64x64.png",
+        ),
+        CrearMenu(
+            "Empanada de queso",
+            [ Ingrediente("Empanada de queso", "unid", 1)],
+            precio=800,
+            icon_path="IMG/icono_empanada_queso_64x64.png",
         ),
     ]
