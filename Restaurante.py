@@ -236,6 +236,7 @@ class AplicacionConPestanas(ctk.CTk):
         menu_generado = 0
         for item in self.menus:
             disponible = True
+            
             for ingNecesario in item.ingredientes:
                 ingEncontradoEnStock = False
                 for ingStock in self.stock.lista_ingredientes:
@@ -244,13 +245,17 @@ class AplicacionConPestanas(ctk.CTk):
                         if int(ingStock.cantidad) < int(ingNecesario.cantidad):
                             disponible = False
                         break
+
                 if not ingEncontradoEnStock or not disponible:
-                    disponible = False; break
+                    disponible = False; 
+                    break
+                
             if disponible:
                 if item.nombre not in self.menus_creados:
                     self.crear_tarjeta(item)
                     self.menus_creados.add(item.nombre)
                     menu_generado += 1
+        
         if menu_generado == 0:
             CTkMessagebox(title="Stock Insuficiente", message="No hay suficientes ingredientes en stock para generar ningún item", icon="warning")
 
