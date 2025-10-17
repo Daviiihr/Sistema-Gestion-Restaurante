@@ -14,7 +14,10 @@ class Pedido:
         self.menus.append(menu)
 
     def eliminar_menu(self, nombre_menu: str):
-        self.menus = [item for item in self.menus if item.nombre != nombre_menu]
+        for index, item in enumerate(self.menus):
+            if item.nombre == nombre_menu:
+                return self.menus.pop(index)
+        return None
 
     def mostrar_pedido(self):
         if not self.menus:

@@ -203,19 +203,33 @@ class AplicacionConPestanas(ctk.CTk):
 
     def tarjeta_click(self, event, menu):
         suficiente_stock = True
-        if self.stock.lista_ingredientes==[]:
-            suficiente_stock=False
+        if not self.stock.lista_ingredientes:
+            suficiente_stock = False
+
         for ingrediente_necesario in menu.ingredientes:
+            ingrediente_necesario_nombre = ingrediente_necesario.nombre.lower()
+            encontrado = False
+
             for ingrediente_stock in self.stock.lista_ingredientes:
-                if ingrediente_necesario.nombre == ingrediente_stock.nombre:
-                    if int(ingrediente_stock.cantidad) < int(ingrediente_necesario.cantidad):
-                        suficiente_stock = False; break
-            if not suficiente_stock: break
+                if ingrediente_stock.nombre.lower() == ingrediente_necesario_nombre:
+                    encontrado = True
+                    if float(ingrediente_stock.cantidad) < float(ingrediente_necesario.cantidad):
+                        suficiente_stock = False
+                    break
+
+            if not encontrado or not suficiente_stock:
+                suficiente_stock = False
+                break
+
         if suficiente_stock:
             for ingrediente_necesario in menu.ingredientes:
+                ingrediente_necesario_nombre = ingrediente_necesario.nombre.lower()
                 for ingrediente_stock in self.stock.lista_ingredientes:
-                    if ingrediente_necesario.nombre == ingrediente_stock.nombre:
-                        ingrediente_stock.cantidad = str(int(ingrediente_stock.cantidad) - int(ingrediente_necesario.cantidad))
+                    if ingrediente_stock.nombre.lower() == ingrediente_necesario_nombre:
+                        nueva_cantidad = float(ingrediente_stock.cantidad) - float(ingrediente_necesario.cantidad)
+                        ingrediente_stock.cantidad = max(0.0, round(nueva_cantidad, 4))
+                        break
+
             self.pedido.agregar_menu(menu)
             self.actualizar_treeview_pedido()
             total = self.pedido.calcular_total()
@@ -269,12 +283,37 @@ class AplicacionConPestanas(ctk.CTk):
         item_id = seleccion[0]
         nombre_item = self.treeview_menu.item(item_id, "values")[0]
 
-        self.pedido.eliminar_menu(nombre_item)
-        
+        menu_eliminado = self.pedido.eliminar_menu(nombre_item)
+        if not menu_eliminado:
+            CTkMessagebox(title="Aviso", message="No se encontró el menú seleccionado en el pedido.", icon="warning")
+            return
+
+        self._devolver_ingredientes_a_stock(menu_eliminado)
         self.actualizar_treeview_pedido()
+        self.actualizar_treeview()
         
         total = self.pedido.calcular_total()
         self.label_total.configure(text=f"Total: ${total:.2f}")
+
+    def _devolver_ingredientes_a_stock(self, menu_eliminado):
+        try:
+            cantidad_en_pedido = int(menu_eliminado.cantidad)
+        except (TypeError, ValueError):
+            cantidad_en_pedido = 0
+
+        if cantidad_en_pedido <= 0:
+            return
+
+        for ingrediente in menu_eliminado.ingredientes:
+            cantidad_total = float(ingrediente.cantidad) * cantidad_en_pedido
+            ingrediente_restaurado = Ingrediente(
+                nombre=ingrediente.nombre,
+                unidad=ingrediente.unidad,
+                cantidad=cantidad_total,
+            )
+            self.stock.agregar_ingrediente(ingrediente_restaurado)
+
+        menu_eliminado.cantidad = 0
 
     # TAREA 3: IMPLEMENTAR LA FUNCIÓN generar_boleta
     def generar_boleta(self):
